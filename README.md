@@ -76,7 +76,7 @@ python text_ml_client.py
 
 ##### Note: `serve status` should be in the `RUNNING` and individual services are in healthy state to get the output.
 
-### GPU Autoscaling Deployment
+### CPU Autoscaling Deployment
 
 1. Build the deployment configuration with GPU autoscaling:
 
@@ -90,7 +90,7 @@ serve build text_ml:app -o serve_config_cpu_autoscalling.yaml
 ray start --head
 ```
 
-3. Deploy with GPU autoscaling:
+3. Deploy with CPU autoscaling:
 
 ```bash
 serve deploy serve_config_cpu_autoscalling.yaml
