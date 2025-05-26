@@ -8,7 +8,15 @@ from ray.serve.handle import DeploymentHandle
 from transformers import pipeline
 
 
-@serve.deployment
+@serve.deployment(# Start with 2 replicas
+    autoscaling_config={
+        "min_replicas": 1,
+        "max_replicas": 10,
+        "target_num_ongoing_requests_per_replica": 2,
+        "upscale_delay_s": 0,
+        "downscale_delay_s": 60
+    }
+)
 class Translator:
     def __init__(self):
         self.language = "french"
@@ -34,7 +42,15 @@ class Translator:
             pass
 
 
-@serve.deployment
+@serve.deployment(
+    autoscaling_config={
+        "min_replicas": 1,
+        "max_replicas": 10,
+        "target_num_ongoing_requests_per_replica": 2,
+        "upscale_delay_s": 0,
+        "downscale_delay_s": 60
+    }
+)
 class Summarizer:
     def __init__(self, translator: DeploymentHandle):
         # Load model

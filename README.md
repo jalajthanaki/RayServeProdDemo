@@ -40,9 +40,11 @@ pip install ray
 
 ## Deployment
 
+### CPU Deployment
+
 To deploy the application using Ray Serve:
 
-1. Build the deployment configuration: Pregenerated serve_config.yaml is already available.
+1. Build the deployment configuration:
 
 ```bash
 serve build text_ml:app -o serve_config.yaml
@@ -73,6 +75,61 @@ python text_ml_client.py
 ```
 
 ##### Note: `serve status` should be in the `RUNNING` and individual services are in healthy state to get the output.
+
+### GPU Autoscaling Deployment
+
+1. Build the deployment configuration with GPU autoscaling:
+
+```bash
+serve build text_ml:app -o serve_config_cpu_autoscalling.yaml
+```
+
+2. Start the Ray cluster:
+
+```bash
+ray start --head
+```
+
+3. Deploy with GPU autoscaling:
+
+```bash
+serve deploy serve_config_cpu_autoscalling.yaml
+```
+
+4. Check deployment status:
+
+```bash
+serve status
+```
+
+5. Monitor the deployment in Ray Dashboard:
+
+```bash
+ray dashboard
+```
+
+## Load Testing
+
+To test the autoscaling behavior:
+
+1. Install k6:
+
+```bash
+brew install k6
+```
+
+2. Run the load test:
+
+```bash
+k6 run loadtest.js
+```
+
+3. Monitor the autoscaling behavior:
+   - Use `serve status` to check replica counts
+   - View the Ray Dashboard at http://localhost:8265
+   - Check the number of replicas scaling up and down based on load
+
+The load test will help verify that the autoscaling configuration is working correctly, with replicas being added and removed based on the incoming request load.
 
 ## Development Commands
 
