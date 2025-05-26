@@ -72,6 +72,8 @@ serve status
 python text_ml_client.py
 ```
 
+##### Note: `serve status` should be in the `RUNNING` and individual services are in healthy state to get the output.
+
 ## Development Commands
 
 ### Debugging
