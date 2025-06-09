@@ -104,9 +104,46 @@ serve status
 
 5. Monitor the deployment in Ray Dashboard:
 
+5. Monitor the deployment in Ray Dashboard:
+
 ```bash
 ray dashboard
 ```
+
+## Authentication Configuration
+
+To deploy and use the application with authentication:
+
+1. Deploy the auth-enabled configuration:
+
+```bash
+serve deploy serve_config_auth_cpu_autoscalling.yaml
+```
+
+2. Check deployment status:
+
+```bash
+serve status
+```
+
+3. Run the auth-enabled client:
+
+```bash
+python text_ml_auth_client.py
+```
+
+The auth-enabled deployment uses the following configuration:
+
+1. API Key Validation:
+   - API keys are validated against a predefined list in `text_ml_auth.py`
+   - Only valid API keys can access the service
+
+
+2. Authentication Flow:
+   - Clients must include their API key in the request headers
+   - The API key is validated before processing the request
+   - Rate limits are enforced per API key
+   - TODO: Add in memory database, rate limiting, and rate limiting per API key
 
 ## Load Testing
 
