@@ -122,4 +122,4 @@ serve-deployments/
 ehthumbs.db
 Thumbs.db
 .mypy_cache
-.api_key.txt
+./api_key.txt
