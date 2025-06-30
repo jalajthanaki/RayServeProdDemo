@@ -6,14 +6,7 @@ from ray.serve.handle import DeploymentHandle
 from transformers import pipeline
 import asyncio
 
-# === In-memory API Key Store ===
-API_KEYS = {
-    "my-secret-key-1": "key1",
-    "my-secret-key-2": "key2"
-}
-
-# === Per-API-Key Usage Counter ===
-API_USAGE = {k: 0 for k in API_KEYS}
+from authfeature.key_manager import APIKeyManager
 
 
 @serve.deployment(
@@ -67,12 +60,12 @@ class Summarizer:
     async def __call__(self, http_request: Request) -> str:
         # --- API Key Auth ---
         api_key = http_request.headers.get("x-api-key")
-        if api_key not in API_KEYS:
+        if api_key is None or api_key not in APIKeyManager.list_keys():
             return "Unauthorized: Invalid API Key"
 
         # --- Usage Tracking ---
-        API_USAGE[api_key] += 1
-        print(f"API Key {api_key} used {API_USAGE[api_key]} time(s).")
+        usage = APIKeyManager.increment_usage(api_key)
+        print(f"API Key {api_key} used {usage} time(s).")
 
         # --- Inference ---
         data = await http_request.json()

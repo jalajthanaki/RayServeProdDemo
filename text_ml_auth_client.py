@@ -2,8 +2,18 @@ import requests
 import json
 
 url = "http://127.0.0.1:8000/"
+import sys
+
+# Load API key from file
+try:
+    with open("api_key.txt", "r") as f:
+        api_key = f.read().strip()
+except FileNotFoundError:
+    print("api_key.txt not found. Please create this file with your API key.")
+    sys.exit(1)
+
 headers = {
-    "x-api-key": "my-secret-key-2",
+    "x-api-key": api_key,
     "Content-Type": "application/json"
 }
 data = {
